@@ -7,19 +7,38 @@
 
 import SwiftUI
 
+
+extension VerticalAlignment {
+    enum MidAccountAndName: AlignmentID {
+        static func defaultValue(in context: ViewDimensions) -> CGFloat {
+            context[.firstTextBaseline]
+        }
+    }
+    
+    static let midAccountAndName = VerticalAlignment(MidAccountAndName.self)
+}
+
 struct ContentView: View {
     var body: some View {
-        VStack(alignment: .leading) {
-            ForEach(0..<10) { pos in
-                Text("Number \(pos)")
-                    .alignmentGuide(.leading) { _ in
-                        Double(pos) * 20
-                    }
+        HStack(alignment: .midAccountAndName) {
+            VStack {
+                Text("@adamelfsborg1")
+                    .alignmentGuide(.midAccountAndName, computeValue: { dimension in
+                        dimension[VerticalAlignment.center]
+                    })
+                Image(.piemonteWallpaper)
+                    .resizable()
+                    .frame(width: 64, height: 64)
+            }
+            VStack {
+                Text("Full name: ")
+                Text("CARL ADAM")
+                    .font(.largeTitle)
+                    .alignmentGuide(.midAccountAndName, computeValue: { dimension in
+                        dimension[VerticalAlignment.center]
+                    })
             }
         }
-        .background(.red)
-        .frame(width: 400, height: 400)
-        .background(.blue)
     }
 }
 
