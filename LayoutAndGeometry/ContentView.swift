@@ -7,22 +7,46 @@
 
 import SwiftUI
 
+struct OuterView: View {
+    var body: some View {
+        VStack {
+            Text("Top")
+            
+            InnerView()
+                .background(.green)
+            
+            Text("Bottom")
+        }
+    }
+}
+
+struct InnerView: View {
+    var body: some View {
+        HStack {
+            Text("left")
+            
+            GeometryReader { proxy in
+                Text("Center")
+                    .background(.blue)
+                    .onTapGesture {
+                        print("Global center: \(proxy.frame(in: .global).midX) * \(proxy.frame(in: .global).midY)")
+                        print("Custom center: \(proxy.frame(in: .named("Custom")).midX) * \(proxy.frame(in: .named("Custom")).midY)")
+                        print("Local center: \(proxy.frame(in: .local).midX) * \(proxy.frame(in: .local).midY)")
+                    }
+            }
+            .background(.orange)
+            
+            Text("Right")
+        }
+    }
+}
+
 
 struct ContentView: View {
     var body: some View {
-        HStack {
-            Text("IMPORTANT")
-                .frame(width: 200)
-                .background(.blue)
-                
-            GeometryReader { proxy in
-                Image(.piemonteWallpaper)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: proxy.size.width * 0.8)
-                    .frame(width: proxy.size.width, height: proxy.size.height)
-            }
-        }
+        OuterView()
+            .background(.red)
+            .coordinateSpace(name: "Custom")
     }
 }
 
