@@ -8,35 +8,19 @@
 import SwiftUI
 
 
-extension VerticalAlignment {
-    enum MidAccountAndName: AlignmentID {
-        static func defaultValue(in context: ViewDimensions) -> CGFloat {
-            context[.firstTextBaseline]
-        }
-    }
-    
-    static let midAccountAndName = VerticalAlignment(MidAccountAndName.self)
-}
-
 struct ContentView: View {
     var body: some View {
-        HStack(alignment: .midAccountAndName) {
-            VStack {
-                Text("@adamelfsborg1")
-                    .alignmentGuide(.midAccountAndName, computeValue: { dimension in
-                        dimension[VerticalAlignment.center]
-                    })
+        HStack {
+            Text("IMPORTANT")
+                .frame(width: 200)
+                .background(.blue)
+                
+            GeometryReader { proxy in
                 Image(.piemonteWallpaper)
                     .resizable()
-                    .frame(width: 64, height: 64)
-            }
-            VStack {
-                Text("Full name: ")
-                Text("CARL ADAM")
-                    .font(.largeTitle)
-                    .alignmentGuide(.midAccountAndName, computeValue: { dimension in
-                        dimension[VerticalAlignment.center]
-                    })
+                    .scaledToFit()
+                    .frame(width: proxy.size.width * 0.8)
+                    .frame(width: proxy.size.width, height: proxy.size.height)
             }
         }
     }
